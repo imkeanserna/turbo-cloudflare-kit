@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
+import { Button } from "@repo/ui/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@repo/ui/components/ui/dialog"
 import styles from "./page.module.css";
 
 type Props = Omit<ImageProps, "src"> & {
@@ -23,6 +31,7 @@ const ThemeImage = (props: Props) => {
 
 export default function Home() {
   const [user, setUser] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -31,7 +40,6 @@ export default function Home() {
         if (response.ok) {
           const data = await response.json();
           setUser(data);
-          console.log(data);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -88,9 +96,23 @@ export default function Home() {
             Read our docs
           </a>
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
+        <Button className="rounded-lg"
+          onClick={() => setOpen(true)}
+        >
+          Open Dialog
         </Button>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger>Open</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your account
+                and remove your data from our servers.
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </main>
       <footer className={styles.footer}>
         <a
