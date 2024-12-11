@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image, { type ImageProps } from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
@@ -19,6 +22,27 @@ const ThemeImage = (props: Props) => {
 };
 
 export default function Home() {
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("/api/user");
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+          console.log(data);
+        } else {
+          console.error("Failed to fetch user data");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -36,6 +60,7 @@ export default function Home() {
             Get started by editing <code>apps/web/app/page.tsx</code>
           </li>
           <li>Save and see your changes instantly.</li>
+          <li>{JSON.stringify(user, null, 2)}</li>
         </ol>
 
         <div className={styles.ctas}>

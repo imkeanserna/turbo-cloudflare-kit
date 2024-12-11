@@ -8,11 +8,14 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint", "^generate"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "db:migrate:deploy": {},
+    "db:push": {},
+    "db:seed": {},
     "dev": {
       "cache": false,
       "persistent": true
