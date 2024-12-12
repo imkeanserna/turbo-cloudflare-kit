@@ -1,12 +1,16 @@
-import prisma from "./client";
+import dotenv from "dotenv";
+import { getPrisma } from "./client";
+
+dotenv.config();
+
+const prisma = getPrisma({ DATABASE_URL: process.env.DATABASE_URL! });
 
 import type { User } from "@prisma/client";
 
 const DEFAULT_USERS = [
-  // Add your own user to pre-populate the database with
   {
-    name: "Tim Apple",
-    email: "tim@apple.com",
+    name: "Kean 3",
+    email: "kean3@apple.com",
   },
 ] as Array<Partial<User>>;
 
@@ -24,6 +28,7 @@ const DEFAULT_USERS = [
           create: {
             ...user,
           },
+          cacheStrategy: { swr: 60, ttl: 60 }
         })
       )
     );

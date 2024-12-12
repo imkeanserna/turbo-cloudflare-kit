@@ -26,17 +26,19 @@ import FormError from "./form-error";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface SignUpFormProps {
   onSubmitAction: (
     email: string,
     password: string,
-    displayName: string
+    name: string
   ) => Promise<{ error: string }>;
 }
 
 export const SignUpForm: FC<SignUpFormProps> = ({ onSubmitAction }) => {
   const [errorMessage, setErrorMessage] = useState<string>();
+  const router = useRouter();
 
   const onGithubSubmit = () => {
     setErrorMessage("");
@@ -53,7 +55,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onSubmitAction }) => {
     defaultValues: {
       email: "",
       password: "",
-      displayName: "",
+      name: "",
     },
   });
 
@@ -70,11 +72,12 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onSubmitAction }) => {
           <form
             onSubmit={form.handleSubmit((data) => {
               setErrorMessage("");
-              onSubmitAction(data.email, data.password, data.displayName)
+              onSubmitAction(data.email, data.password, data.name)
                 .then((message) => {
                   if (message) {
                     setErrorMessage(message.error);
                   }
+                  router.push("/auth/login");
                 })
                 .catch((_err) => {
                   setErrorMessage("Something went wrong");
@@ -84,11 +87,11 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onSubmitAction }) => {
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <FormField
-                  name="displayName"
+                  name="name"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Display Name</FormLabel>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input placeholder="eg: Vishy" {...field} />
                       </FormControl>

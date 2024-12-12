@@ -8,7 +8,8 @@
     "./postcss.config": "./postcss.config.mjs",
     "./tailwind.config": "./tailwind.config.ts",
     "./lib/*": "./src/lib/*.ts",
-    "./components/*": "./src/components/*.tsx"
+    "./components/*": "./src/components/*.tsx",
+    "./schema": "./src/schema/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
